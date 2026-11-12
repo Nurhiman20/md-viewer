@@ -27,10 +27,25 @@ Prerequisites: Node 20+, Rust (stable-msvc), Visual Studio Build Tools (C++ work
 ```sh
 npm install
 npm run tauri dev -- -- "C:\path\to\file.md"   # file argument optional
-npm run tauri build                             # installer in src-tauri/target/release/bundle/nsis/
 ```
 
 `samples/` contains a document exercising every rendering feature.
+
+## Build & Install
+
+```sh
+npm install
+npm run tauri build
+```
+
+Output: `src-tauri\target\release\bundle\nsis\MD Viewer_<version>_x64-setup.exe`. The first build is slow because Rust compiles every dependency; later builds are much faster.
+
+To install:
+
+1. Run the `*-setup.exe`. It installs for the current user, so admin rights are not needed.
+2. `.md` / `.markdown` files are associated with MD Viewer. If Windows keeps the old default app, right-click a `.md` file → **Open with** → **Choose another app** → **MD Viewer** → **Always**.
+
+To uninstall, go to **Settings → Apps → Installed apps → MD Viewer → Uninstall**.
 
 ## Structure
 
