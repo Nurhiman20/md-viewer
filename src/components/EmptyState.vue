@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AppIcon from "./AppIcon.vue";
+import AppLogo from "./AppLogo.vue";
 import { usePreferences } from "../composables/usePreferences";
 import { basename, dirname } from "../lib/path";
 
@@ -10,9 +11,7 @@ const { recent, removeRecent } = usePreferences();
 
 <template>
   <section class="mx-auto flex max-w-xl flex-col items-center px-4 py-16 text-center" aria-labelledby="empty-title">
-    <div class="mb-5 rounded-2xl bg-(--accent-soft) p-4 text-(--accent)">
-      <AppIcon name="file" :size="36" />
-    </div>
+    <AppLogo :size="64" class="mb-5 drop-shadow-md" />
     <h2 id="empty-title" class="text-xl font-semibold">Buka file Markdown</h2>
     <p class="mt-2 text-sm text-(--muted)">
       Klik <strong>Buka file</strong>, tekan <kbd>Ctrl</kbd>+<kbd>O</kbd>, atau seret file

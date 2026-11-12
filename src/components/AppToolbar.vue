@@ -1,24 +1,21 @@
 <script setup lang="ts">
-import { computed } from "vue";
 import AppIcon from "./AppIcon.vue";
+import AppLogo from "./AppLogo.vue";
 import { usePreferences, ZOOM_MAX, ZOOM_MIN } from "../composables/usePreferences";
 import { basename, dirname } from "../lib/path";
 
 const props = defineProps<{ path: string | null; canReload: boolean }>();
 defineEmits<{ open: []; reload: [] }>();
 
-const { theme, zoom, cycleTheme, zoomIn, zoomOut, resetZoom } = usePreferences();
-
-const themeLabel = computed(
-  () => ({ system: "Tema: ikuti sistem", light: "Tema: terang", dark: "Tema: gelap" })[theme.value],
-);
-const themeIcon = computed(() => (({ system: "monitor", light: "sun", dark: "moon" }) as const)[theme.value]);
+const { isDark, zoom, setDark, zoomIn, zoomOut, resetZoom } = usePreferences();
 </script>
 
 <template>
   <header
     class="sticky top-0 z-20 flex h-12 items-center gap-2 border-b border-(--border) bg-(--bg)/90 px-3 backdrop-blur"
   >
+    <AppLogo :size="26" class="shrink-0" />
+
     <button type="button" class="btn" title="Buka file (Ctrl+O)" @click="$emit('open')">
       <AppIcon name="folder" />
       <span class="hidden sm:inline">Buka</span>
@@ -29,6 +26,7 @@ const themeIcon = computed(() => (({ system: "monitor", light: "sun", dark: "moo
         <h1 class="truncate text-sm font-semibold">{{ basename(props.path) }}</h1>
         <p class="hidden truncate text-xs text-(--muted) sm:block">{{ dirname(props.path) }}</p>
       </template>
+      <h1 v-else class="truncate text-sm font-semibold">MD Viewer</h1>
     </div>
 
     <button
@@ -74,8 +72,18 @@ const themeIcon = computed(() => (({ system: "monitor", light: "sun", dark: "moo
       </button>
     </div>
 
-    <button type="button" class="btn-icon" :aria-label="themeLabel" :title="themeLabel" @click="cycleTheme">
-      <AppIcon :name="themeIcon" />
+    <button
+      type="button"
+      role="switch"
+      class="theme-switch"
+      :aria-checked="isDark"
+      aria-label="Mode gelap"
+      :title="isDark ? 'Mode gelap: aktif' : 'Mode gelap: nonaktif'"
+      @click="setDark(!isDark)"
+    >
+      <span class="theme-switch-thumb">
+        <AppIcon :name="isDark ? 'moon' : 'sun'" :size="12" />
+      </span>
     </button>
   </header>
 </template>

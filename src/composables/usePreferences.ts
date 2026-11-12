@@ -30,9 +30,9 @@ watchEffect(() => {
 const clampZoom = (value: number) => Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, Math.round(value * 10) / 10));
 
 export function usePreferences() {
-  function cycleTheme() {
-    const order: ThemeMode[] = ["system", "light", "dark"];
-    theme.value = order[(order.indexOf(theme.value) + 1) % order.length];
+  // Explicit choice overrides the OS; "system" stays the default until first toggle.
+  function setDark(dark: boolean) {
+    theme.value = dark ? "dark" : "light";
   }
 
   function zoomIn() {
@@ -52,5 +52,5 @@ export function usePreferences() {
     recent.value = recent.value.filter((p) => !samePath(p, path));
   }
 
-  return { theme, isDark, zoom, recent, cycleTheme, zoomIn, zoomOut, resetZoom, addRecent, removeRecent };
+  return { theme, isDark, zoom, recent, setDark, zoomIn, zoomOut, resetZoom, addRecent, removeRecent };
 }
